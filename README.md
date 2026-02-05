@@ -19,3 +19,8 @@ https://github.com/openclaw/openclaw
 - docs/ONBOARDING_LOG.md
 - security/SECURITY.md
 - ops/HANDOVER.md
+
+## Versioning
+This repository follows semantic versioning.
+Current baseline release: **v0.1.0** (onboarding + docs).
+
