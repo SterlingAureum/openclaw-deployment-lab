@@ -49,6 +49,22 @@ These components can be added later based on deployment needs.
 
 ---
 
+## Prerequisites
+
+This repo uses a git submodule for the upstream OpenClaw source.
+
+After cloning, initialize submodules:
+
+```bash
+git submodule update --init --recursive
+```
+If you pulled new changes and the submodule is out of date:
+
+```bash
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+
 ## Deployment Workflow
 
 ### 1 Initialize (first time only)

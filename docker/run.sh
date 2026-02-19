@@ -15,6 +15,31 @@ export OPENCLAW_CONFIG_DIR="${OPENCLAW_CONFIG_DIR:-$HOME/.openclaw}"
 export OPENCLAW_WORKSPACE_DIR="${OPENCLAW_WORKSPACE_DIR:-$OPENCLAW_CONFIG_DIR/workspace}"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# --- submodule sanity check (minimal, no logic change) ---
+OPENCLAW_DIR="$ROOT/vendor/openclaw"
+
+if [[ ! -d "$OPENCLAW_DIR" ]]; then
+  cat >&2 <<'EOF'
+[ERROR] Missing submodule directory: vendor/openclaw
+
+You likely cloned the repo without initializing submodules.
+
+Fix:
+  git submodule update --init --recursive
+
+If you already ran it, verify:
+  ls -la vendor/openclaw
+EOF
+  exit 1
+fi
+
+# optional: ensure it's really a git checkout (not empty dir)
+if [[ ! -e "$OPENCLAW_DIR/.git" && ! -e "$OPENCLAW_DIR/.gitmodules" && ! -e "$ROOT/.gitmodules" ]]; then
+  echo "[WARN] vendor/openclaw exists but does not look like a git submodule checkout." >&2
+  echo "       If compose fails, re-run: git submodule update --init --recursive" >&2
+fi
+# --- end submodule check ---
+
 cd "$ROOT/vendor/openclaw"
 
 DOCKER="docker"

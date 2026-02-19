@@ -29,12 +29,42 @@ echo "[info] OPENCLAW_WORKSPACE_DIR=$OPENCLAW_WORKSPACE_DIR"
 
 mkdir -p "$OPENCLAW_CONFIG_DIR" "$OPENCLAW_WORKSPACE_DIR"
 
-# Generate token (64 hex chars)
-TOKEN="$(python3 - <<'PY'
+# --- token generation with fallbacks (minimal change) ---
+
+generate_token() {
+  if command -v openssl >/dev/null 2>&1; then
+    openssl rand -hex 32
+    return 0
+  fi
+
+  if command -v python3 >/dev/null 2>&1; then
+    python3 - <<'PY'
 import secrets
 print(secrets.token_hex(32))
 PY
-)"
+    return 0
+  fi
+
+  if [[ -r /dev/urandom ]] && command -v xxd >/dev/null 2>&1; then
+    head -c 32 /dev/urandom | xxd -p -c 256
+    return 0
+  fi
+
+  return 1
+}
+
+TOKEN="$(generate_token)" || {
+  echo "[ERROR] Cannot generate token: need openssl or python3 (or /dev/urandom + xxd)." >&2
+  exit 1
+}
+# --- end token generation ---
+
+# Generate token (64 hex chars)
+#TOKEN="$(python3 - <<'PY'
+#import secrets
+#print(secrets.token_hex(32))
+#PY
+#)"
 
 # Render template (no jq dependency)
 sed \
