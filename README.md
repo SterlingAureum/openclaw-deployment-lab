@@ -13,6 +13,15 @@ It is designed for **client environments, DevOps handoff, and repeatable setups*
 
 ---
 
+## Version Scope
+
+The `v0.2.x` series focuses on establishing a baseline OpenClaw gateway deployment.
+
+This baseline intentionally excludes model providers and inference integrations.  
+Model configuration and provider integration will be introduced starting from the `v0.3.x` series.
+
+---
+
 ## Purpose
 
 This lab removes the complexity of the interactive onboarding flow and replaces it with a:
