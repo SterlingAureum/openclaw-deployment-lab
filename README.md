@@ -34,10 +34,10 @@ Scope split:
 
 This lab removes the complexity of the interactive onboarding flow and replaces it with a:
 
-✔ config‑first initialization  
-✔ single source of truth for authentication  
-✔ secure gateway defaults  
-✔ automation‑friendly deployment flow  
+- config‑first initialization  
+- single source of truth for authentication  
+- secure gateway defaults  
+- automation‑friendly deployment flow  
 
 This allows consistent deployment across multiple servers and clients.
 
@@ -195,12 +195,12 @@ No additional configuration required.
 
 ## Security Defaults
 
-✔ Gateway bound to localhost  
-✔ Token authentication required  
-✔ No public exposure  
-✔ No channels enabled by default
-✔ Pairing behavior remains unchanged from the baseline deployment
-✔ Remote provider integration does not remove the need to handle pairing separately
+- Gateway bound to localhost  
+- Token authentication required  
+- No public exposure  
+- No channels enabled by default
+- Pairing behavior remains unchanged from the baseline deployment
+- Remote provider integration does not remove the need to handle pairing separately
 
 These defaults are suitable for controlled deployment environments.
 
