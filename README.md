@@ -15,10 +15,18 @@ It is designed for **client environments, DevOps handoff, and repeatable setups*
 
 ## Version Scope
 
-The `v0.2.x` series focuses on establishing a baseline OpenClaw gateway deployment.
+This repository started with a `v0.2.x` baseline focused on deterministic
+OpenClaw gateway deployment, secure defaults, and config-first initialization.
 
-This baseline intentionally excludes model providers and inference integrations.  
-Model configuration and provider integration will be introduced starting from the `v0.3.x` series.
+The current `v0.3.0` release extends that baseline with **remote provider
+integration**, allowing OpenClaw to connect to a remote OpenAI-compatible
+backend such as vLLM.
+
+Scope split:
+
+- `v0.2.x` — baseline gateway deployment
+- `v0.3.0` — remote provider integration
+- later versions — channels, routing, skills, and higher-level runtime features
 
 ---
 
@@ -35,26 +43,30 @@ This allows consistent deployment across multiple servers and clients.
 
 ---
 
-## Baseline Mode (v0.2.0)
+## Current Operating Modes
 
-This repository intentionally runs OpenClaw in a minimal baseline configuration:
+This repository currently covers two layers:
 
-### Included
+### Baseline Layer (v0.2.x)
 - Gateway deployment (Docker)
 - Token authentication enabled
 - Loopback binding (127.0.0.1)
 - Secure defaults validated
-- Config‑first initialization
+- Config-first initialization
 - Repeatable run workflow
 
-### Intentionally Excluded
-- Model providers
+### Remote Provider Layer (v0.3.0)
+- OpenClaw connected to a remote OpenAI-compatible backend
+- vLLM-oriented provider examples
+- Endpoint verification workflow
+- Remote backend troubleshooting guidance
+
+### Still Out of Scope
 - Chat channels
 - Skills / nodes
-- External exposure
+- Routing logic
+- Production reverse proxy / TLS termination patterns
 - Web search integration
-
-These components can be added later based on deployment needs.
 
 ---
 
@@ -103,6 +115,22 @@ ssh -N -L 18789:127.0.0.1:18789 user@server
 Then open:
 
 http://localhost:18789/
+
+---
+
+## Remote Provider Extension
+
+Starting from `v0.3.0`, this lab can also connect to a remote
+OpenAI-compatible inference backend such as vLLM.
+
+This extends the baseline deployment without changing the core local
+gateway workflow.
+
+See:
+
+- `docs/V0_3_0_REMOTE_PROVIDER.md`
+- `docs/PROVIDER_VLLM.md`
+- `docs/TROUBLESHOOTING_REMOTE_BACKEND.md`
 
 ---
 
@@ -170,10 +198,11 @@ No additional configuration required.
 ✔ Gateway bound to localhost  
 ✔ Token authentication required  
 ✔ No public exposure  
-✔ No channels enabled by default  
-✔ Pairing required for interactive chat  
+✔ No channels enabled by default
+✔ Pairing behavior remains unchanged from the baseline deployment
+✔ Remote provider integration does not remove the need to handle pairing separately
 
-These defaults are suitable for production environments.
+These defaults are suitable for controlled deployment environments.
 
 ---
 
@@ -195,10 +224,16 @@ This is expected in baseline mode.
 
 ## Documentation
 
-- docs/LOCAL_SETUP.md
-- docs/ONBOARDING_LOG.md
-- security/SECURITY.md
-- ops/HANDOVER.md
+Baseline deployment:
+- `docs/LOCAL_SETUP.md`
+- `docs/ONBOARDING_LOG.md`
+- `security/SECURITY.md`
+- `ops/HANDOVER.md`
+
+Remote provider integration:
+- `docs/V0_3_0_REMOTE_PROVIDER.md`
+- `docs/PROVIDER_VLLM.md`
+- `docs/TROUBLESHOOTING_REMOTE_BACKEND.md`
 
 ---
 
@@ -228,26 +263,31 @@ This lab provides:
 This repository follows semantic versioning.
 
 **v0.1.0**
-- onboarding & documentation baseline
+- onboarding and documentation baseline
 
 **v0.2.0**
-- config‑first initialization
+- config-first initialization
 - deterministic gateway startup
 - single token source of truth
-- root‑safe state directory handling
-- production deployment workflow
+- root-safe state directory handling
+- production-oriented baseline deployment workflow
+
+**v0.3.0**
+- remote OpenAI-compatible provider integration
+- vLLM-oriented provider configuration guidance
+- endpoint verification workflow
+- remote backend troubleshooting documentation
 
 ---
 
 ## Next Phases
 
 Planned enhancements:
-
-- provider integration (v0.3)
-- channel enablement & pairing flow
-- reverse proxy & TLS patterns
+- channel enablement and pairing flow refinement
+- reverse proxy and TLS patterns
 - systemd / supervisor deployment
 - token rotation utilities
+- more complete runtime features such as routing and skills
 
 ---
 
