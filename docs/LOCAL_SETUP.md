@@ -48,6 +48,15 @@ The goal of this document is to create a minimal and reproducible baseline.
 A successful result at this stage does not yet mean that a remote model provider has been attached.
 Remote provider integration is added later as a separate step.
 
-For the next step after baseline setup, see:
+## Next Step
+
+At this stage, the local CLI baseline is complete.
+
+This baseline is intentionally minimal.
+Provider, channel, and skill setup are skipped during the initial QuickStart flow so that later configuration steps can be introduced in a more controlled way.
+
+For the next step in the current validated path, continue with:
 
 - `docs/BASELINE_TO_REMOTE_VLLM.md`
+
+That document explains how the baseline setup is extended into a working remote vLLM-backed OpenClaw path.
