@@ -1,296 +1,110 @@
 # OpenClaw Deployment Lab
 
-A reproducible **deployment & security blueprint** for running OpenClaw in a clean, repeatable, production‑oriented baseline mode.
+OpenClaw Deployment Lab is a documentation-first repository focused on OpenClaw deployment, configuration, integration, troubleshooting, and workflow validation.
 
-This project focuses on:
+The current validated version is centered on a CLI-based deployment path in a local or VM-based environment. The current successful path starts from a QuickStart baseline, skips provider, channel, and skill setup during initial onboarding, and then adds a remote vLLM provider afterward.
 
-- deterministic deployment
-- secure defaults
-- operational clarity
-- handover‑ready documentation
-
-It is designed for **client environments, DevOps handoff, and repeatable setups**.
-
----
-
-## Version Scope
-
-This repository started with a `v0.2.x` baseline focused on deterministic
-OpenClaw gateway deployment, secure defaults, and config-first initialization.
-
-The current `v0.3.0` release extends that baseline with **remote provider
-integration**, allowing OpenClaw to connect to a remote OpenAI-compatible
-backend such as vLLM.
-
-Scope split:
-
-- `v0.2.x` — baseline gateway deployment
-- `v0.3.0` — remote provider integration
-- later versions — channels, routing, skills, and higher-level runtime features
-
----
+Docker-based workflow remains part of the project direction and is expected to be refined in later iterations after the current deployment path, configuration model, and operational issues are better documented and understood.
 
 ## Purpose
 
-This lab removes the complexity of the interactive onboarding flow and replaces it with a:
+This repository focuses on studying and documenting practical OpenClaw deployment workflows.
 
-- config‑first initialization  
-- single source of truth for authentication  
-- secure gateway defaults  
-- automation‑friendly deployment flow  
+The current phase prioritizes:
 
-This allows consistent deployment across multiple servers and clients.
+- CLI-based deployment and operation
+- local or VM-based runtime setup
+- QuickStart baseline initialization
+- post-baseline remote vLLM integration
+- troubleshooting and operational notes
 
----
+Later iterations may expand the repository with:
 
-## Current Operating Modes
+- Docker-based deployment workflow
+- additional provider examples
+- channel and skill-related configuration
+- security and operational constraints
+- more structured troubleshooting cases
 
-This repository currently covers two layers:
+## What Is Currently Validated
 
-### Baseline Layer (v0.2.x)
-- Gateway deployment (Docker)
-- Token authentication enabled
-- Loopback binding (127.0.0.1)
-- Secure defaults validated
-- Config-first initialization
-- Repeatable run workflow
+The current validated path in this repository includes:
 
-### Remote Provider Layer (v0.3.0)
-- OpenClaw connected to a remote OpenAI-compatible backend
-- vLLM-oriented provider examples
-- Endpoint verification workflow
-- Remote backend troubleshooting guidance
+- OpenClaw operated through CLI
+- local or VM-based shell environment
+- QuickStart baseline onboarding
+- provider, channel, and skill setup skipped during baseline initialization
+- remote OpenAI-compatible provider configuration added afterward
+- remote vLLM model integration
+- successful chat validation against the remote backend
 
-### Still Out of Scope
-- Chat channels
-- Skills / nodes
-- Routing logic
-- Production reverse proxy / TLS termination patterns
-- Web search integration
+## Current Recommended Path
 
----
+At the current stage, the recommended workflow is the CLI-based deployment path.
 
-## Prerequisites
+Follow these documents in order:
 
-This repo uses a git submodule for the upstream OpenClaw source.
+1. `docs/LOCAL_SETUP.md`
+   - local CLI installation and QuickStart baseline setup
 
-After cloning, initialize submodules:
+2. `docs/BASELINE_TO_REMOTE_VLLM.md`
+   - transition from baseline setup to remote vLLM integration
 
-```bash
-git submodule update --init --recursive
-```
-If you pulled new changes and the submodule is out of date:
+3. `docs/PROVIDER_VLLM.md`
+   - provider-specific vLLM configuration notes
 
-```bash
-git submodule sync --recursive
-git submodule update --init --recursive
-```
+4. `ops/HANDOVER.md`
+   - current project state and operational handover notes
 
-## Deployment Workflow
+## Repository Layout
 
-### 1 Initialize (first time only)
+Main areas in this repository:
 
-Generates configuration and gateway token.
+- `docs/`
+  - setup guides, transition notes, provider notes, and troubleshooting references
 
-```bash
-bash docker/init.sh
-```
+- `ops/`
+  - operational handover notes and project state tracking
 
-### 2 Start Gateway
+- `docker/`
+  - Docker-related materials for later workflow refinement and comparison
 
-```bash
-bash docker/run.sh
-```
+## Scope
 
-Open locally:
+Included in the current scope:
 
-http://localhost:18789/
+- CLI-based deployment path
+- local or VM-based operation
+- QuickStart baseline setup
+- remote vLLM integration after baseline onboarding
+- validated chat behavior on the current path
+- deployment notes and troubleshooting records
 
-### 3 Remote Access (recommended)
+Not yet a main focus:
 
-```bash
-ssh -N -L 18789:127.0.0.1:18789 user@server
-```
+- advanced channel design
+- skill ecosystem integration
+- routing strategies
+- multi-provider orchestration
+- fully standardized Docker deployment workflow
 
-Then open:
+## Notes
 
-http://localhost:18789/
+- This repository is focused on OpenClaw deployment rather than only one runtime mode.
+- The current validated version is CLI-based.
+- The current validated path begins with a minimal QuickStart baseline.
+- Provider, channel, and skill setup are intentionally skipped during the initial onboarding phase of this path.
+- Remote vLLM integration is added afterward as a separate step.
+- Docker is still part of the planned project direction and is not being abandoned.
 
----
+## Next Direction
 
-## Remote Provider Extension
+The current priority is to keep the validated CLI plus remote vLLM path clear, reproducible, and well documented.
 
-Starting from `v0.3.0`, this lab can also connect to a remote
-OpenAI-compatible inference backend such as vLLM.
+After that, future work may include:
 
-This extends the baseline deployment without changing the core local
-gateway workflow.
-
-See:
-
-- `docs/V0_3_0_REMOTE_PROVIDER.md`
-- `docs/PROVIDER_VLLM.md`
-- `docs/TROUBLESHOOTING_REMOTE_BACKEND.md`
-
----
-
-## Authentication & Token Source of Truth
-
-This lab uses **config‑first authentication**.
-
-Gateway token is stored in:
-
-```
-~/.openclaw/openclaw.json
-```
-
-Upstream `.env` token variables are disabled to avoid dual token sources.
-
-If the UI shows `token mismatch`, verify:
-
-- gateway restarted after init
-- browser cache cleared
-- tokenized URL used
-
----
-
-## State Directory
-
-Default state directory:
-
-```
-~/.openclaw
-```
-
-This stores:
-
-- configuration
-- workspace
-- sessions
-- agent state
-
-### ⚠️ Running as root
-
-If running as root, you **must** define a state directory to avoid using `/root/.openclaw`:
-
-```bash
-OPENCLAW_CONFIG_DIR=/var/lib/openclaw OPENCLAW_WORKSPACE_DIR=/var/lib/openclaw/workspace bash docker/init.sh
-```
-
-Running as a normal user is recommended.
-
----
-
-## Docker Permissions
-
-If Docker requires sudo on your system, the scripts automatically fall back to:
-
-```
-sudo docker
-```
-
-No additional configuration required.
-
----
-
-## Security Defaults
-
-- Gateway bound to localhost  
-- Token authentication required  
-- No public exposure  
-- No channels enabled by default
-- Pairing behavior remains unchanged from the baseline deployment
-- Remote provider integration does not remove the need to handle pairing separately
-
-These defaults are suitable for controlled deployment environments.
-
----
-
-## ⚠️ Pairing & Chat Behavior
-
-Dashboard access uses token authentication.
-
-Direct chat requires pairing and a configured channel.
-
-If you see:
-
-```
-pairing required
-```
-
-This is expected in baseline mode.
-
----
-
-## Documentation
-
-Baseline deployment:
-- `docs/LOCAL_SETUP.md`
-- `docs/ONBOARDING_LOG.md`
-- `security/SECURITY.md`
-- `ops/HANDOVER.md`
-
-Remote provider integration:
-- `docs/V0_3_0_REMOTE_PROVIDER.md`
-- `docs/PROVIDER_VLLM.md`
-- `docs/TROUBLESHOOTING_REMOTE_BACKEND.md`
-
----
-
-## Upstream Project
-
-OpenClaw official repository:
-
-https://github.com/openclaw/openclaw
-
----
-
-## Why This Lab Exists
-
-The upstream onboarding process is interactive and developer‑oriented.
-
-This lab provides:
-
-- automation‑friendly initialization
-- reproducible deployment
-- security‑first defaults
-- operational clarity for client handoff
-
----
-
-## Versioning
-
-This repository follows semantic versioning.
-
-**v0.1.0**
-- onboarding and documentation baseline
-
-**v0.2.0**
-- config-first initialization
-- deterministic gateway startup
-- single token source of truth
-- root-safe state directory handling
-- production-oriented baseline deployment workflow
-
-**v0.3.0**
-- remote OpenAI-compatible provider integration
-- vLLM-oriented provider configuration guidance
-- endpoint verification workflow
-- remote backend troubleshooting documentation
-
----
-
-## Next Phases
-
-Planned enhancements:
-- channel enablement and pairing flow refinement
-- reverse proxy and TLS patterns
-- systemd / supervisor deployment
-- token rotation utilities
-- more complete runtime features such as routing and skills
-
----
-
-## License
-
-This repository is a deployment blueprint and documentation layer built on top of the OpenClaw project.
+- Docker workflow refinement
+- side-by-side CLI and Docker deployment guidance
+- additional provider examples
+- channel and skill-related examples
+- more complete troubleshooting cases
