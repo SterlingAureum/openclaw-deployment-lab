@@ -13,6 +13,7 @@ The current repository state is centered on:
 - QuickStart baseline initialization
 - remote vLLM integration after baseline onboarding
 - skill + tool integration on top of the existing remote model workflow
+- first external channel baseline with Telegram DM validation
 - troubleshooting and operational notes
 
 This repository is intended to document a practical and reproducible deployment path.
@@ -31,6 +32,9 @@ Follow these documents in order:
 
 3. `docs/V0_4_0_SKILL_TOOL_INTEGRATION.md`
    - skill + tool integration, example configuration updates, validation notes, and workflow checks
+
+4. `docs/CHANNEL_TELEGRAM_BASELINE.md`
+   - first channel integration baseline, Telegram bot setup, pairing flow, and DM validation
 
 ## Troubleshooting
 
