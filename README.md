@@ -36,6 +36,9 @@ Follow these documents in order:
 4. `docs/CHANNEL_TELEGRAM_BASELINE.md`
    - first channel integration baseline, Telegram bot setup, pairing flow, and DM validation
 
+5. `docs/REMOTE_VLLM_SECURITY.md`
+   - a minimal remote vLLM security baseline by enabling --api-key authentication
+
 ## Troubleshooting
 
 If you run into problems during setup or validation, see:
