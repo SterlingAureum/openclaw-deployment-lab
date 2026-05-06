@@ -15,6 +15,7 @@ The current repository state is centered on:
 - skill + tool integration on top of the existing remote model workflow
 - first external channel baseline with Telegram DM validation
 - troubleshooting and operational notes
+- minimal security baseline for remote vLLM API key authentication and token handling
 
 This repository is intended to document a practical and reproducible deployment path.
 It does not aim to provide broad model recommendations or benchmark-style comparisons.
